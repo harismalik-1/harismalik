@@ -7,11 +7,22 @@ import PoseModule as pm
 
 
 app = Flask(__name__)
-cap1 = cv2.VideoCapture(0)
-# video = pafy.new("https://www.youtube.com/watch?v=Ic1f9wKjoJg")
-# best = video.getbest(preftype="mp4")
-# cap2 = cv2.VideoCapture(best.url)
+# cap1 = cv2.VideoCapture(0)
+video1 = pafy.new("https://www.youtube.com/watch?v=Ic1f9wKjoJg")
+best1 = video1.getbest(preftype="mp4")
+cap1 = cv2.VideoCapture(best1.url)
 
+video2 = pafy.new("https://www.youtube.com/watch?v=Ic1f9wKjoJg")
+best2 = video2.getbest(preftype="mp4")
+cap2 = cv2.VideoCapture(best2.url)
+
+video3 = pafy.new("https://www.youtube.com/watch?v=Ic1f9wKjoJg")
+best3 = video3.getbest(preftype="mp4")
+cap3 = cv2.VideoCapture(best3.url)
+
+video4 = pafy.new("https://www.youtube.com/watch?v=Ic1f9wKjoJg")
+best4 = video4.getbest(preftype="mp4")
+cap4 = cv2.VideoCapture(best4.url)
 
 def generate_frames(cap):
     fall = False
@@ -34,6 +45,18 @@ def generate_frames(cap):
                 fall = True
             else:
                 fall = False
+            if cap1:
+                with open("fall_value1.txt", "w") as f:
+                    f.write(str(fall))
+            if cap2:
+                with open("fall_value2.txt", "w") as f:
+                    f.write(str(fall))
+            if cap3:
+                with open("fall_value3.txt", "w") as f:
+                    f.write(str(fall))
+            if cap4:
+                with open("fall_value4.txt", "w") as f:
+                    f.write(str(fall))
             #print(fall)     
         cTime = time.time()
         fps = 1 / (cTime - pTime)
@@ -51,9 +74,15 @@ def index():
 @app.route('/video1')
 def video1():
     return Response(generate_frames(cap1), mimetype='multipart/x-mixed-replace; boundary=frame')
-# @app.route('/video2')
-# def video2():
-#     return Response(generate_frames(cap2), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/video2')
+def video2():
+    return Response(generate_frames(cap2), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/video3')
+def video3():
+    return Response(generate_frames(cap3), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/video4')
+def video4():
+    return Response(generate_frames(cap4), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port= 8000)
